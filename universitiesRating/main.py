@@ -7,10 +7,14 @@ class BestChinaUniv:
         self.univ_list = []
 
     def get_html(self, url):
-        r = requests.get(url)
-        r.encoding = r.apparent_encoding
-        self.html = r.text
-        return self.html
+        try:
+            r = requests.get(url, timeout=30)
+            r.raise_for_status()
+            r.encoding = r.apparent_encoding
+            self.html = r.text
+            return self.html
+        except:
+            print("Some error occurred when getting html")
 
     def fill_univ_list(self):
         soup = BeautifulSoup(self.html, 'html.parser')
@@ -35,4 +39,3 @@ class BestChinaUniv:
 if __name__ == '__main__':
     url = 'http://www.zuihaodaxue.com/zuihaodaxuepaiming2018.html'
     BestChinaUniv.main(url, 20)
-
